@@ -1,0 +1,33 @@
+{
+  "name": "elm-english-dictionary",
+  "version": "1.0.0",
+  "description": "English language definitions based on WordNet 3.0",
+  "scripts": {
+    "postinstall": "elm package install -y",
+    "build": "scripts/get-wordnet.sh && scripts/convert.js",
+    "test": "elm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ktonon/elm-english-dictionary.git"
+  },
+  "author": "Kevin Tonon <kevin@betweenconcepts.com>",
+  "license": "WORDNET",
+  "bugs": {
+    "url": "https://github.com/ktonon/elm-english-dictionary/issues"
+  },
+  "homepage": "https://github.com/ktonon/elm-english-dictionary#readme",
+  "devDependencies": {
+    "elm": "^0.18.0",
+    "elm-test": "^0.18.2",
+    "eslint": "^3.11.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "command-line-args": "^3.0.3"
+  }
+}
