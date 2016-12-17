@@ -3,3 +3,4 @@
 /app/Words*.elm
 /wordnet
 /.serverless
+/api/words.js

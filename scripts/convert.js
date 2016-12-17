@@ -4,6 +4,9 @@ const BPromise = require('bluebird');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs');
 const readline = require('readline');
+const safe = require('../api/safe');
+const writeElm = require('./write-elm');
+const writeJs = require('./write-js');
 
 const options = commandLineArgs([
   { name: 'minLength', alias: 'l', type: Number, defaultValue: 1 },
@@ -37,17 +40,15 @@ const parseIndex = ext =>
     const m = line.match(indexLinePattern);
     if (!m) { return; }
     const lemma = m[1];
-    if (lemma.length < options.minLength
-      || lemma.length > options.maxLength
-      || !validLemma.test(lemma)) {
+    if (!validLemma.test(lemma)) {
       return;
     }
-    const w = words[lemma] || newWord();
+    const w = words[safe(lemma)] || newWord();
     w.instances.push({
       ids: m[3].trim().split(/\s+/),
       rest: m[2].trim().split(/\s+/),
     });
-    words[lemma] = w;
+    words[safe(lemma)] = w;
   });
 
 const parseData = ext =>
@@ -56,36 +57,22 @@ const parseData = ext =>
     if (!m) {
       throw new Error(line);
     }
-    defs[m[1]] = {
-      def: m[3].trim(),
-      example: m[4] && m[4].trim(),
-      rest: m[2].trim(),
-    };
+    defs[m[1]] = { def: m[3].trim() };
+    if (m[4]) {
+      const x = m[4] && m[4].trim();
+      defs[m[1]].example = x.slice(3, x.length - 1).split('"; "');
+    }
+    // rest: m[2].trim(),
   });
 
 const processTasks = extensions.reduce((t, ext) =>
   t.concat([parseData(ext), parseIndex(ext)]), []);
 
-
 BPromise.all(processTasks).then(() => {
-  const l = options.minLength;
-  const u = options.maxLength;
-  const modName = `Words${l}To${u}`;
-  const out = fs.openSync(`${__dirname}/../app/${modName}.elm`, 'w');
-  const write = val => fs.writeSync(out, val);
-
-  const lemmas = Object.keys(words);
-  write(`module ${modName} exposing (words)
-
-import Set
-
-
-words : Set.Set String
-words =
-    """${lemmas.join('\n')}"""
-        |> String.split "\\n"
-        |> Set.fromList
-    `);
-
-  fs.closeSync(out);
+  writeElm({
+    l: options.minLength,
+    u: options.maxLength,
+    words,
+  });
+  writeJs({ words, defs });
 });

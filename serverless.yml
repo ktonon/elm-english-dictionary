@@ -20,6 +20,7 @@ package:
     - elm-stuff/**
     - node_modules/**
     - scripts/**
+    - tests/**
     - wordnet/**
 
 functions:
