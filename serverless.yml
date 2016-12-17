@@ -1,0 +1,36 @@
+service: english-dictionary
+
+frameworkVersion: "=1.4.0"
+
+plugins:
+  - serverless-plugin-include-dependencies
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: us-east-1
+
+package:
+  individually: true
+  include:
+    - api/**
+  exclude:
+    - app/**
+    - elm-stuff/**
+    - node_modules/**
+    - scripts/**
+    - wordnet/**
+
+functions:
+  api:
+    handler: api.handler
+    events:
+      - http:
+          integration: lambda-proxy
+          path: /
+          method: ANY
+      - http:
+          integration: lambda-proxy
+          path: /{any+}
+          method: ANY

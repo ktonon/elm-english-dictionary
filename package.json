@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "English language definitions based on WordNet 3.0",
   "scripts": {
+    "preinstall": "npm prune",
     "postinstall": "elm package install -y",
+    "lint": "eslint .",
     "build": "scripts/get-wordnet.sh && scripts/convert.js",
-    "test": "elm test"
+    "test": "elm test",
+    "posttest": "npm run lint",
+    "start": "supervisor local-server.js"
   },
   "repository": {
     "type": "git",
@@ -18,13 +22,24 @@
   },
   "homepage": "https://github.com/ktonon/elm-english-dictionary#readme",
   "devDependencies": {
+    "@microservice/koa-logging": "^1.0.0",
+    "@microservice/logger": "^1.0.0",
     "elm": "^0.18.0",
     "elm-test": "^0.18.2",
     "eslint": "^3.11.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.7.1"
+    "eslint-plugin-react": "^6.7.1",
+    "koa": "^1.2.4",
+    "koa-bodyparser": "^2.3.0",
+    "koa-cors": "0.0.16",
+    "koa-router": "^5.4.0",
+    "rc": "^1.1.6",
+    "serverless": "^1.4.0",
+    "serverless-http": "^1.0.6",
+    "serverless-plugin-include-dependencies": "^1.1.0",
+    "supervisor": "^0.12.0"
   },
   "dependencies": {
     "bluebird": "^3.4.6",

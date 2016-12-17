@@ -71,7 +71,7 @@ BPromise.all(processTasks).then(() => {
   const l = options.minLength;
   const u = options.maxLength;
   const modName = `Words${l}To${u}`;
-  const out = fs.openSync(`${__dirname}/../elm/${modName}.elm`, 'w');
+  const out = fs.openSync(`${__dirname}/../app/${modName}.elm`, 'w');
   const write = val => fs.writeSync(out, val);
 
   const lemmas = Object.keys(words);

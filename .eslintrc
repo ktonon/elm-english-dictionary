@@ -1,1 +1,6 @@
 extends: airbnb
+rules:
+  func-names: off
+  import/no-extraneous-dependencies: off
+  require-yield: off
+  strict: off
