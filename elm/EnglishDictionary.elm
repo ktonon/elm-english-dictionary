@@ -2,13 +2,13 @@ module EnglishDictionary exposing (..)
 
 import Set
 import Task exposing (Task)
-import Words3To5
+import Words1To5
 
 
 checkIsWord : String -> Task String Bool
 checkIsWord lemma =
     if String.length lemma <= 5 then
-        Words3To5.words
+        Words1To5.words
             |> Set.member lemma
             |> Task.succeed
     else

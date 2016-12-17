@@ -6,7 +6,7 @@ const fs = require('fs');
 const readline = require('readline');
 
 const options = commandLineArgs([
-  { name: 'minLength', alias: 'l', type: Number, defaultValue: 3 },
+  { name: 'minLength', alias: 'l', type: Number, defaultValue: 1 },
   { name: 'maxLength', alias: 'u', type: Number, defaultValue: 5 },
 ]);
 
