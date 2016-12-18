@@ -9,7 +9,8 @@
     "build": "scripts/get-wordnet.sh && scripts/convert.js",
     "test": "elm test",
     "posttest": "npm run lint",
-    "start": "supervisor local-server.js"
+    "start": "supervisor local-server.js",
+    "deploy": "serverless deploy"
   },
   "repository": {
     "type": "git",

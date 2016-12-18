@@ -8,15 +8,15 @@ const logging = require('@microservice/koa-logging');
 const middleware = require('./middleware');
 const router = require('koa-router');
 const serverless = require('serverless-http');
-const lemma = require('./lemma');
+const dict = require('./dict');
 
 const routes = router();
 routes.use(middleware.error);
 routes.use(logging(logger));
 routes.use(bodyParser());
 
-routes.use(lemma.routes());
-routes.use(lemma.allowedMethods());
+routes.use(dict.routes());
+routes.use(dict.allowedMethods());
 
 routes.get('/', function* () {
   this.body = 'English Dictionary';

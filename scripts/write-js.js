@@ -5,7 +5,7 @@ module.exports = ({ words, defs }) => {
   const ids = {};
 
   Object.keys(words).forEach((safeLemma) => {
-    ids[safeLemma] = words[safeLemma].instances.map(inst => inst.ids);
+    ids[safeLemma] = words[safeLemma].instances;
   });
 
   const out = fs.openSync(`${__dirname}/../api/words.js`, 'w');

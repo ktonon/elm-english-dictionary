@@ -1,14 +1,15 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
-    "repository": "https://github.com/user/project.git",
-    "license": "BSD3",
+    "summary": "English language dictionary derived from WordNet 3.0",
+    "repository": "https://github.com/ktonon/elm-english-dictionary.git",
+    "license": "WORDNET",
     "source-directories": [
-        "./elm"
+        "./app"
     ],
-    "exposed-modules": [],
+    "exposed-modules": ["EnglishDictionary", "PartOfSpeech"],
     "dependencies": {
-        "elm-lang/core": "5.0.0 <= v < 6.0.0"
+        "elm-lang/core": "5.0.0 <= v < 6.0.0",
+        "elm-lang/http": "1.0.0 <= v < 2.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }

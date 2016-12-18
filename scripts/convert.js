@@ -44,10 +44,7 @@ const parseIndex = ext =>
       return;
     }
     const w = words[safe(lemma)] || newWord();
-    w.instances.push({
-      ids: m[3].trim().split(/\s+/),
-      rest: m[2].trim().split(/\s+/),
-    });
+    w.instances.push(m[3].trim().split(/\s+/));
     words[safe(lemma)] = w;
   });
 
@@ -57,10 +54,13 @@ const parseData = ext =>
     if (!m) {
       throw new Error(line);
     }
-    defs[m[1]] = { def: m[3].trim() };
+    defs[m[1]] = [
+      ext,
+      m[3].trim(),
+    ];
     if (m[4]) {
       const x = m[4] && m[4].trim();
-      defs[m[1]].example = x.slice(3, x.length - 1).split('"; "');
+      defs[m[1]].push(x.slice(3, x.length - 1).split('"; "'));
     }
     // rest: m[2].trim(),
   });
