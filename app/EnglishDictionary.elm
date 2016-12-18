@@ -5,11 +5,13 @@ module EnglishDictionary
         , Definition
         , Error
         , Config
+        , WordCheck
+        , WordDefinition
         )
 
 {-| English language dictionary. Check word membership and lookup definitions.
 
-@docs checkIsWord, fetchDefinitions, Definition, Error, Config
+@docs checkIsWord, fetchDefinitions, Definition, Error, Config, WordDefinition, WordCheck
 -}
 
 import Http
@@ -32,6 +34,22 @@ type alias Config =
     }
 
 
+{-| A word with a list of definitions.
+-}
+type alias WordDefinition =
+    { word : String
+    , definitions : List Definition
+    }
+
+
+{-| Whether or not a word is part of the english language.
+-}
+type alias WordCheck =
+    { word : String
+    , exists : Bool
+    }
+
+
 {-| A word defition consists of a part of speech (ex, noun) a meaning, and zero
 or more short examples.
 -}
@@ -42,13 +60,23 @@ type alias Definition =
     }
 
 
-definitionDecoder : Decoder (List Definition)
-definitionDecoder =
-    Decode.list
-        (Decode.map3 Definition
-            (at [ "partsOfSpeech" ] PartOfSpeech.decoder)
-            (at [ "meaning" ] Decode.string)
-            (at [ "examples" ] (Decode.list Decode.string))
+checkDecoder : String -> Decoder WordCheck
+checkDecoder word =
+    Decode.map2 WordCheck
+        (Decode.succeed word)
+        (Decode.bool)
+
+
+definitionDecoder : String -> Decoder WordDefinition
+definitionDecoder word =
+    Decode.map2 WordDefinition
+        (Decode.succeed word)
+        (Decode.list
+            (Decode.map3 Definition
+                (at [ "partsOfSpeech" ] PartOfSpeech.decoder)
+                (at [ "meaning" ] Decode.string)
+                (at [ "examples" ] (Decode.list Decode.string))
+            )
         )
 
 
@@ -76,11 +104,12 @@ ensureEndpoint config makeTask =
 Words up to and including length 5 can be checked without making an Http request
 to the backing serverless API.
 -}
-checkIsWord : Config -> String -> Task Error Bool
+checkIsWord : Config -> String -> Task Error WordCheck
 checkIsWord config word =
     if String.length word <= 5 then
         Words1To5.words
             |> Set.member word
+            |> WordCheck word
             |> Task.succeed
     else
         ensureEndpoint config
@@ -93,7 +122,7 @@ checkIsWord config word =
 
 {-| Fetch a list of definitions associated with the given word.
 -}
-fetchDefinitions : Config -> String -> Task Error (List Definition)
+fetchDefinitions : Config -> String -> Task Error WordDefinition
 fetchDefinitions config word =
     ensureEndpoint config
         (\endpoint ->
@@ -107,11 +136,11 @@ fetchDefinitions config word =
 -- HTTP
 
 
-checkRequest : String -> String -> Http.Request Bool
+checkRequest : String -> String -> Http.Request WordCheck
 checkRequest endpoint word =
-    Http.get (endpoint ++ "/check/" ++ word) Decode.bool
+    Http.get (endpoint ++ "/check/" ++ word) (checkDecoder word)
 
 
-definitionsRequest : String -> String -> Http.Request (List Definition)
+definitionsRequest : String -> String -> Http.Request WordDefinition
 definitionsRequest endpoint word =
-    Http.get (endpoint ++ "/define/" ++ word) definitionDecoder
+    Http.get (endpoint ++ "/define/" ++ word) (definitionDecoder word)
