@@ -1,12 +1,16 @@
 {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "summary": "English language dictionary derived from WordNet 3.0",
     "repository": "https://github.com/ktonon/elm-english-dictionary.git",
     "license": "WORDNET",
     "source-directories": [
         "./app"
     ],
-    "exposed-modules": ["EnglishDictionary", "PartOfSpeech"],
+    "exposed-modules": [
+        "EnglishDictionary",
+        "PartOfSpeech",
+        "Words1To5"
+    ],
     "dependencies": {
         "elm-lang/core": "5.0.0 <= v < 6.0.0",
         "elm-lang/http": "1.0.0 <= v < 2.0.0"

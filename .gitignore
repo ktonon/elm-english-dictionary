@@ -1,6 +1,6 @@
 /node_modules
 /elm-stuff
-/app/Words*.elm
 /wordnet
 /.serverless
 /api/words.js
+npm-debug.log

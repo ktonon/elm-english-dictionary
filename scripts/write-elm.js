@@ -11,9 +11,16 @@ module.exports = ({ l, u, words }) => {
   ));
   write(`module ${modName} exposing (words)
 
+{-| List of english words of length 1 to 5
+
+@docs words
+-}
+
 import Set
 
 
+{-| List of english words of length 1 to 5
+-}
 words : Set.Set String
 words =
     """${lemmas.join('\n')}"""
