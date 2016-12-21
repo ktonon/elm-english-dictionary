@@ -73,7 +73,7 @@ definitionDecoder word =
         (Decode.succeed word)
         (Decode.list
             (Decode.map3 Definition
-                (at [ "partsOfSpeech" ] PartOfSpeech.decoder)
+                (at [ "partOfSpeech" ] PartOfSpeech.decoder)
                 (at [ "meaning" ] Decode.string)
                 (at [ "examples" ] (Decode.list Decode.string))
             )
