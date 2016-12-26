@@ -3,8 +3,9 @@ const add = (type) => {
   const defs = {};
   const func = (name, meaning) => {
     const safe = `~${name}`;
-    words[safe] = { instances: [[safe]] };
-    defs[safe] = [type, meaning];
+    const id = `${type}${safe}`;
+    words[safe] = { instances: [[id]] };
+    defs[id] = [type, meaning];
   };
   func.export = () => ({ words, defs });
   return func;
