@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const BPromise = require('bluebird');
+const closed = require('./closed');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs');
 const readline = require('readline');
@@ -28,8 +29,8 @@ const indexLinePattern = /^(\S+)(.*?)(\b\d{8}\b.*)$/;
 const validLemma = /^[a-z]+$/i;
 const dataLinePattern = /^(\d{8})(.*?)\|([^;]+)(;(.*))?$/;
 
-const words = {};
-const defs = {};
+const words = closed.words;
+const defs = closed.defs;
 
 const newWord = () => ({
   instances: [],

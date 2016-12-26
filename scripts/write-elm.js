@@ -23,7 +23,7 @@ import Set
 -}
 words : Set.Set String
 words =
-    """${lemmas.join('\n')}"""
+    """${lemmas.sort().join('\n')}"""
         |> String.split "\\n"
         |> Set.fromList
     `);

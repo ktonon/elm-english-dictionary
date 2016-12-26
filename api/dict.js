@@ -13,6 +13,17 @@ api.get('/check/:lemma', function* () {
   this.body = !!words.ids[safe(lemma)];
 });
 
+api.get('/check-many/:lemmas', function* () {
+  const lemmas = this.params.lemmas.split('+');
+  logger.info(`check: ${lemmas.join(', ')}`);
+  this.body = {
+    check: lemmas.map(lemma => [
+      lemma,
+      !!words.ids[safe(lemma)],
+    ]),
+  };
+});
+
 api.get('/define/:lemma', function* () {
   const lemma = this.params.lemma;
   logger.info(`define: ${lemma}`);
